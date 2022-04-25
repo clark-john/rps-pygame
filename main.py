@@ -1,4 +1,5 @@
 import pygame
+from colour import Color
 from pygame.display import (
     set_caption, 
     set_icon,
@@ -29,8 +30,25 @@ SCREEN_HEIGHT = 600
 class Player(Sprite):
     def __init__(self, sprite_color, atk):
         super(Player, self).__init__()
+
+        # -------------------------
+        def name_to_rgb(thiscolor):
+            if type(thiscolor) != tuple:
+                print("not tuple")
+                col = Color(thiscolor)
+                lttup = []
+                for x in col.rgb:
+                    lttup.append(int(round(x*255,0)))
+                lttup = tuple(lttup)
+                thiscolor = lttup
+                return thiscolor
+            else:
+                return thiscolor
+        # ------------------------
+        
+        thiscolor = name_to_rgb(sprite_color)
         self.surf = Surface((50, 50))
-        self.surf.fill(sprite_color)
+        self.surf.fill(thiscolor)
         self.rect = self.surf.get_rect()
         if atk == 1:
             print('scissors')
@@ -109,7 +127,7 @@ screen = set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 set_caption("rock paper scissors")
 set_icon(icon)
 
-player1 = Player((43, 109, 224),1)
+player1 = Player('red',1)
 player2 = Player((43, 224, 179),1)
 ground1 = Ground()
 
