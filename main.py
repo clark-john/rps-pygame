@@ -1,7 +1,7 @@
 import pygame
 from colour import Color
 from pygame.display import (
-    set_caption, 
+    set_caption,
     set_icon,
     set_mode
 )
@@ -21,14 +21,33 @@ from pygame.locals import (
     KEYDOWN,
     QUIT,
 )
+from colour import Color 
+""" 
+from pygame import Vector2
+from pprint import pp
+from PySide2.examples.multimedia import player
+
+comment unused things detected by pyflakes """
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
-# (0,0,0) tuple black color
-
 class Player(Sprite):
+
     def __init__(self, sprite_color, atk):
+
+        def name_to_rgb(thiscolor):
+            if type(thiscolor) != tuple:
+                col = Color(thiscolor)
+                lttup = []
+                for x in col.rgb:
+                    lttup.append(int(round(x*255,0)))
+                lttup = tuple(lttup)
+                thiscolor = lttup
+                return thiscolor
+            else:
+                return thiscolor
+
         super(Player, self).__init__()
 
         # -------------------------
@@ -48,75 +67,79 @@ class Player(Sprite):
         
         thiscolor = name_to_rgb(sprite_color)
         self.surf = Surface((50, 50))
+<<<<<<< HEAD
+=======
+        thiscolor = name_to_rgb(sprite_color)
+>>>>>>> main
         self.surf.fill(thiscolor)
         self.rect = self.surf.get_rect()
-        if atk == 1:
-            print('scissors')
-        elif atk == 2:
-            print('paper')
-        elif atk == 3:
-            print('rock')
-
-    def update_player1(self, pressed_keys):
-        if pressed_keys[K_UP]:
-            self.rect.move_ip(0, -6)
-
-        if pressed_keys[K_DOWN]:
-            self.rect.move_ip(0, 6)
-
-        if pressed_keys[K_LEFT]:
-            self.rect.move_ip(-3, 0)
-
-        if pressed_keys[K_RIGHT]:
-            self.rect.move_ip(3, 0)
-
-        if self.rect.right > SCREEN_WIDTH:
-            self.rect.right = SCREEN_WIDTH
-
-        if self.rect.top <= 0:
-            self.rect.top = 0
-
-        if self.rect.bottom >= SCREEN_HEIGHT:
-            self.rect.bottom = SCREEN_HEIGHT
-
-        if self.rect.left < 0:
-            self.rect.left = 0
-
-    def update_player2(self, pressed_keys):
-
-        if pressed_keys[K_w]:
-            self.rect.move_ip(0, -6)
-
-        if pressed_keys[K_s]:
-            self.rect.move_ip(0, 6)
-
-        if pressed_keys[K_a]:
-            self.rect.move_ip(-3, 0)
-
-        if pressed_keys[K_d]:
-            self.rect.move_ip(3, 0)
-
-        if self.rect.left < 0:
-            self.rect.left = 0
-
-        if self.rect.right > SCREEN_WIDTH:
-            self.rect.right = SCREEN_WIDTH
-
-        if self.rect.top <= 0:
-            self.rect.top = 0
-
-        if self.rect.bottom >= SCREEN_HEIGHT:
-            self.rect.bottom = SCREEN_HEIGHT
+        self.atk = atk
+        self.allowjump = False
         
-    def gravity(self):
-        self.rect.bottom += 3
+        if self.atk == 1:
+            print('rock')
+        elif self.atk == 2:
+            print('paper')
+        elif self.atk == 3:
+            print('scissors')
+            
+        self.speed = pygame.Vector2()
+        
+    def update_player1(self, pressed_keys):
+        if pressed_keys[K_LEFT]:
+            self.speed.x = -1
+    
+        if pressed_keys[K_RIGHT]:
+            self.speed.x = 1
+         
+        if pressed_keys[K_UP] and self.allowjump == True:
+            self.speed.y += -0.3
+        else: 
+            self.speed.y = 0  
+                
+        if pressed_keys[K_DOWN]:
+            self.speed.x = 0
+    
+    def update_player2(self, pressed_keys):
+        if pressed_keys[K_a]:
+            self.speed.x = -1
+    
+        if pressed_keys[K_d]:
+            self.speed.x = 1
+
+        if pressed_keys[K_w] and self.allowjump == True:
+            self.speed.y += -0.3
+        else: 
+            self.speed.y = 0
+    
+        if pressed_keys[K_s]:
+            self.speed.x = 0
+        
+    def move(self):
+        self.rect.move_ip(self.speed)
+        
+    def bound(self):
+        if self.rect.right > SCREEN_WIDTH:
+            self.rect.right = SCREEN_WIDTH
+
+        if self.rect.top <= 0:
+            self.rect.top = 0
+
+        if self.rect.bottom >= SCREEN_HEIGHT:
+            self.speed.y = 0
+
+        if self.rect.left < 0:
+            self.rect.left = 0
+
 
 class Ground(Sprite):
+
     def __init__(self):
         super(Ground, self).__init__()
         self.surf = Surface((600, 200))
-        self.surf.fill((0, 0, 0))
-        self.rect = self.surf.get_rect(center=((400),(500)))
+        self.surf.fill((200, 0, 0))
+        self.rect = self.surf.get_rect(center=((400), (500)))
+
 
 icon = load('./assets/icon.png')
 
@@ -127,74 +150,108 @@ screen = set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 set_caption("rock paper scissors")
 set_icon(icon)
 
+<<<<<<< HEAD
 player1 = Player('red',1)
 player2 = Player((43, 224, 179),1)
+=======
+# use w3c color naming to recognize them
+player1 = Player('darkgreen', 1)
+player2 = Player('darkmagenta', 1)
+>>>>>>> main
 ground1 = Ground()
 
-player1.rect.move_ip(177, 100)
-player2.rect.move_ip(599, 100)
+player2.rect.move_ip(177, 100)
+player1.rect.move_ip(599, 100)
 
 running = True
 
 while running:
-    # for loop through the event queue
+    screen.fill((255, 255, 255))
+    screen.blit(ground1.surf, ground1.rect)
+
     for event in pygame.event.get():
-
-        # Check for KEYDOWN event
         if event.type == KEYDOWN:
-
-            # If the Esc key is pressed, then exit the main loop
             if event.key == K_ESCAPE:
                 running = False
-
-        # Check for QUIT event. If QUIT, then set running to false.
 
         elif event.type == QUIT:
             running = False
 
     pressed_keys = pygame.key.get_pressed()
-    
     player1.update_player1(pressed_keys)
     player2.update_player2(pressed_keys)
 
-    screen.fill((255, 255, 255))
+    def sign(num):
+        if num < 0:
+            return -1
+        elif num > 0:
+            return 1
+        else:
+            return 0
 
-    # Fighting ground
-    screen.blit(ground1.surf, ground1.rect)
+    sp1 = sign(player1.speed.x)
+    sp2 = sign(player2.speed.x)
+    
+    if pygame.sprite.collide_rect(player1, player2): 
+        if (player1.atk == player2.atk):
+            if sp1 == 0:
+                player2.speed.x = -sp2 * 2
+                player1.speed.x = -player2.speed.x
+            else:
+                player1.speed.x = -sp1 * 2
+                player2.speed.x = -player1.speed.x
 
-    
-    #boolean to check if player1 is above fground
-    pl_above_fground = player1.rect.bottom >= ground1.rect.top
-    
-    
-    if pygame.sprite.collide_rect(player1, ground1):  
-        if player1.rect.right <= ground1.rect.right:
-            if player1.rect.left <= ground1.rect.left:
-               player1.rect.right = ground1.rect.left
-            else: player1.rect.bottom = ground1.rect.top
-        else: player1.rect.left = ground1.rect.right
-    
-    if pygame.sprite.collide_rect(player2, ground1):            #checks collision player to ground
-        if player2.rect.right <= ground1.rect.right:            #checks if within right end
-            if player2.rect.left > ground1.rect.left:           #checks if with left end
-               player2.rect.bottom = ground1.rect.top           #stays on top of the ground
-            else: player2.rect.right = ground1.rect.left        #bounded by ground's left side
-        else: player2.rect.left = ground1.rect.right            #bounded by ground's right side
-    
-    if pygame.sprite.collide_rect(player2, player1):
-        print('players collided')
-      #  break
+#      r p s
+#    r x l w
+#    p w x l
+#    s l w x
 
 # <rect(177, 400, 50, 50)>
 # <rect(594, 400, 50, 50)>    
-    player1.gravity();
-    player2.gravity();
+    # player1.gravity()
+    # player2.gravity()
+    
+        # # New gravity realistic
+        
+    if player1.speed.y < 0:
+        if (player1.rect.top <= 150):
+            player1.speed.y = 0
+    else:
+        if pygame.sprite.collide_rect(player1, ground1):  # checks collision player to ground
+            player1.speed.y = 0
+            player1.allowjump = True
+        else:
+            player1.speed.y += 2
+            player1.allowjump = False
+            
+    if player2.speed.y < 0:
+        if (player2.rect.top <= 150):
+            player2.speed.y = 0
+    else:
+        if pygame.sprite.collide_rect(player2, ground1):  # checks collision player to ground
+            player2.speed.y = 0
+            player2.allowjump = True
+        else:
+            player2.speed.y += 2
+            player2.allowjump = False
+
+    if player1.rect.bottom > ground1.rect.top+5:
+        if pygame.sprite.collide_rect(player1, ground1):
+            player1.speed[:]=(0,2)
+            
+    if player2.rect.bottom > ground1.rect.top+5:
+        if pygame.sprite.collide_rect(player2, ground1):
+            player2.speed[:]=(0,2)
+            
+    player1.bound()
+    player2.bound()
+
+    player2.move()
+    player1.move()
 
     screen.blit(player1.surf, player1.rect)
     screen.blit(player2.surf, player2.rect)
 
-    # print(player2.rect)
-    # print(player1.rect)
     pygame.display.flip()
 
 pygame.quit()
