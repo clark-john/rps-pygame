@@ -20,16 +20,16 @@ from pygame.locals import (
     KEYDOWN,
     QUIT,
 )
+from colour import Color 
+""" 
 from pygame import Vector2
 from pprint import pp
-from colour import Color
 from PySide2.examples.multimedia import player
+
+comment unused things detected by pyflakes """
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-
-# (0,0,0) tuple black color
-
 
 class Player(Sprite):
 
@@ -37,7 +37,6 @@ class Player(Sprite):
 
         def name_to_rgb(thiscolor):
             if type(thiscolor) != tuple:
-                print("not tuple")
                 col = Color(thiscolor)
                 lttup = []
                 for x in col.rgb:
@@ -130,8 +129,9 @@ screen = set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 set_caption("rock paper scissors")
 set_icon(icon)
 
-player1 = Player((0,255,0), 1)
-player2 = Player((0,0,255), 1)
+# use w3c color naming to recognize them
+player1 = Player('darkgreen', 1)
+player2 = Player('darkmagenta', 1)
 ground1 = Ground()
 
 player2.rect.move_ip(177, 100)
