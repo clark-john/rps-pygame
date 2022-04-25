@@ -35,13 +35,12 @@ class Player(Sprite):
         self.rect = self.surf.get_rect()
         # self.rect.move_ip(177, 400)
         
-
     def update_player1(self, pressed_keys):
         if pressed_keys[K_UP]:
-            self.rect.move_ip(0, -3)
+            self.rect.move_ip(0, -6)
 
         if pressed_keys[K_DOWN]:
-            self.rect.move_ip(0, 3)
+            self.rect.move_ip(0, 6)
 
         if pressed_keys[K_LEFT]:
             self.rect.move_ip(-3, 0)
@@ -64,10 +63,10 @@ class Player(Sprite):
     def update_player2(self, pressed_keys):
 
         if pressed_keys[K_w]:
-            self.rect.move_ip(0, -3)
+            self.rect.move_ip(0, -6)
 
         if pressed_keys[K_s]:
-            self.rect.move_ip(0, 3)
+            self.rect.move_ip(0, 6)
 
         if pressed_keys[K_a]:
             self.rect.move_ip(-3, 0)
@@ -86,11 +85,14 @@ class Player(Sprite):
 
         if self.rect.bottom >= SCREEN_HEIGHT:
             self.rect.bottom = SCREEN_HEIGHT
+        
+    def gravity(self):
+        self.rect.bottom += 3
 
 class Ground(Sprite):
     def __init__(self):
         super(Ground, self).__init__()
-        self.surf = Surface((600, 100))
+        self.surf = Surface((600, 200))
         self.surf.fill((200, 0, 0))
         self.rect = self.surf.get_rect(center=((400),(500)))
 
@@ -107,8 +109,8 @@ player1 = Player()
 player2 = Player()
 ground1 = Ground()
 
-player1.rect.move_ip(177, 400)
-player2.rect.move_ip(599, 400)
+player1.rect.move_ip(177, 100)
+player2.rect.move_ip(599, 100)
 
 running = True
 
@@ -129,7 +131,7 @@ while running:
             running = False
 
     pressed_keys = pygame.key.get_pressed()
-
+    
     player1.update_player1(pressed_keys)
     player2.update_player2(pressed_keys)
 
@@ -138,36 +140,33 @@ while running:
     # Fighting ground
     screen.blit(ground1.surf, ground1.rect)
 
-    if pygame.sprite.collide_rect(player1, ground1):
-
-# this code below effectively stops player colliding to the left and right of fighting ground
-#        if player1.rect.right >= ground1.rect.right:
- #           player1.rect.left = ground1.rect.right
- #       if player1.rect.left <= ground1.rect.left:
-  #          player1.rect.right = ground1.rect.left
-
- #       This code below is working to stop player from falling but has problems at left and right side
-        if player1.rect.bottom >= ground1.rect.top:
-            player1.rect.bottom = ground1.rect.top
-
-    if pygame.sprite.collide_rect(player2, ground1):
-
-# this code below effectively stops player colliding to the left and right of fighting ground
-#        if player1.rect.right >= ground1.rect.right:
- #           player1.rect.left = ground1.rect.right
- #       if player1.rect.left <= ground1.rect.left:
-  #          player1.rect.right = ground1.rect.left
-
- #       This code below is working to stop player from falling but has problems at left and right side
-        if player2.rect.bottom >= ground1.rect.top:
-            player2.rect.bottom = ground1.rect.top
-
+    
+    #boolean to check if player1 is above fground
+    pl_above_fground = player1.rect.bottom >= ground1.rect.top
+    
+    
+    if pygame.sprite.collide_rect(player1, ground1):  
+        if player1.rect.right <= ground1.rect.right:
+            if player1.rect.left <= ground1.rect.left:
+               player1.rect.right = ground1.rect.left
+            else: player1.rect.bottom = ground1.rect.top
+        else: player1.rect.left = ground1.rect.right
+    
+    if pygame.sprite.collide_rect(player2, ground1):            #checks collision player to ground
+        if player2.rect.right <= ground1.rect.right:            #checks if within right end
+            if player2.rect.left > ground1.rect.left:           #checks if with left end
+               player2.rect.bottom = ground1.rect.top           #stays on top of the ground
+            else: player2.rect.right = ground1.rect.left        #bounded by ground's left side
+        else: player2.rect.left = ground1.rect.right            #bounded by ground's right side
+    
     if pygame.sprite.collide_rect(player2, player1):
         print('players collided')
-        break
+      #  break
 
 # <rect(177, 400, 50, 50)>
 # <rect(594, 400, 50, 50)>    
+    player1.gravity();
+    player2.gravity();
 
     screen.blit(player1.surf, player1.rect)
     screen.blit(player2.surf, player2.rect)
