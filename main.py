@@ -77,8 +77,7 @@ class Player(Sprite):
             self.speed.y = 0
     
         if pressed_keys[K_s]:
-            if (self.speed.x > 0):
-                self.speed.x = 0
+            self.speed.x = 0
         
     def move(self):
         self.rect.move_ip(self.speed)
@@ -140,7 +139,6 @@ while running:
     player1.update_player1(pressed_keys)
     player2.update_player2(pressed_keys)
 
-# EXPERIMENTAL / UNFINISHED
     def sign(num):
         if num < 0:
             return -1
@@ -194,7 +192,15 @@ while running:
         else:
             player2.speed.y += 2
             player2.allowjump = False
-   
+
+    if player1.rect.bottom > ground1.rect.top+5:
+        if pygame.sprite.collide_rect(player1, ground1):
+            player1.speed[:]=(0,2)
+            
+    if player2.rect.bottom > ground1.rect.top+5:
+        if pygame.sprite.collide_rect(player2, ground1):
+            player2.speed[:]=(0,2)
+            
     player1.bound()
     player2.bound()
 
