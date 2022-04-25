@@ -12,12 +12,10 @@ from pygame.locals import (
     K_DOWN,
     K_LEFT,
     K_RIGHT,
-
     K_w,
     K_a,
     K_s,
     K_d,
-
     K_ESCAPE,
     KEYDOWN,
     QUIT,
@@ -26,15 +24,21 @@ from pygame.locals import (
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
+# (0,0,0) tuple black color
 
 class Player(Sprite):
-    def __init__(self):
+    def __init__(self, sprite_color, atk):
         super(Player, self).__init__()
         self.surf = Surface((50, 50))
-        self.surf.fill((0, 0, 0))
+        self.surf.fill(sprite_color)
         self.rect = self.surf.get_rect()
-        # self.rect.move_ip(177, 400)
-        
+        if atk == 1:
+            print('scissors')
+        elif atk == 2:
+            print('paper')
+        elif atk == 3:
+            print('rock')
+
     def update_player1(self, pressed_keys):
         if pressed_keys[K_UP]:
             self.rect.move_ip(0, -6)
@@ -93,7 +97,7 @@ class Ground(Sprite):
     def __init__(self):
         super(Ground, self).__init__()
         self.surf = Surface((600, 200))
-        self.surf.fill((200, 0, 0))
+        self.surf.fill((0, 0, 0))
         self.rect = self.surf.get_rect(center=((400),(500)))
 
 icon = load('./assets/icon.png')
@@ -105,8 +109,8 @@ screen = set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 set_caption("rock paper scissors")
 set_icon(icon)
 
-player1 = Player()
-player2 = Player()
+player1 = Player((43, 109, 224),1)
+player2 = Player((43, 224, 179),1)
 ground1 = Ground()
 
 player1.rect.move_ip(177, 100)
