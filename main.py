@@ -22,6 +22,7 @@ from pygame.locals import (
 )
 from pygame import Vector2
 from pprint import pp
+from colour import Color
 from PySide2.examples.multimedia import player
 
 SCREEN_WIDTH = 800
@@ -33,9 +34,24 @@ SCREEN_HEIGHT = 600
 class Player(Sprite):
 
     def __init__(self, sprite_color, atk):
+
+        def name_to_rgb(thiscolor):
+            if type(thiscolor) != tuple:
+                print("not tuple")
+                col = Color(thiscolor)
+                lttup = []
+                for x in col.rgb:
+                    lttup.append(int(round(x*255,0)))
+                lttup = tuple(lttup)
+                thiscolor = lttup
+                return thiscolor
+            else:
+                return thiscolor
+
         super(Player, self).__init__()
         self.surf = Surface((50, 50))
-        self.surf.fill(sprite_color)
+        thiscolor = name_to_rgb(sprite_color)
+        self.surf.fill(thiscolor)
         self.rect = self.surf.get_rect()
         self.atk = atk
         self.allowjump = False
@@ -114,8 +130,8 @@ screen = set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 set_caption("rock paper scissors")
 set_icon(icon)
 
-player1 = Player((43, 224, 179), 1)
-player2 = Player((43, 109, 224), 1)
+player1 = Player((0,255,0), 1)
+player2 = Player((0,0,255), 1)
 ground1 = Ground()
 
 player2.rect.move_ip(177, 100)
