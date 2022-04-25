@@ -1,2 +1,2 @@
 pygame
-colour
+colour >= 0.1.5
