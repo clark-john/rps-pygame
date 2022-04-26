@@ -14,7 +14,6 @@ from controller.controller import Controller
 class Player(Sprite):
 
     def __init__(self, sprite_color, atk:AttackType, controller:Controller):
-
         def name_to_rgb(thiscolor):
             if type(thiscolor) != tuple:
                 col = Color(thiscolor)
@@ -37,7 +36,7 @@ class Player(Sprite):
         self.allowjump = False
         self.speed = pygame.Vector2()
         
-    def update_player1(self, pressed_keys):
+    def update(self, pressed_keys):
         if pressed_keys[self.controller.left]:
             self.speed.x = -1
     
@@ -51,24 +50,7 @@ class Player(Sprite):
                 
         if pressed_keys[self.controller.down]:
             self.speed.x = 0
-    
-    # BAKIT MAY UPDATE PLAYER 2 NA METHOD ANG PLAYER?
-    # HINDI BA DAPAT, SARILI LANG NYA ANG INUUPDATE NYA?
-    def update_player2(self, pressed_keys):
-        if pressed_keys[K_a]:
-            self.speed.x = -1
-    
-        if pressed_keys[K_d]:
-            self.speed.x = 1
-
-        if pressed_keys[K_w] and self.allowjump == True:
-            self.speed.y += -0.3
-        else: 
-            self.speed.y = 0
-    
-        if pressed_keys[K_s]:
-            self.speed.x = 0
-        
+  
     def move(self):
         self.rect.move_ip(self.speed)
         

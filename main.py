@@ -56,8 +56,8 @@ while running:
             running = False
 
     pressed_keys = pygame.key.get_pressed()
-    player1.update_player1(pressed_keys)
-    player2.update_player1(pressed_keys)
+    player1.update(pressed_keys)
+    player2.update(pressed_keys)
 
     def sign(num):
         if num < 0:
