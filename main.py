@@ -21,12 +21,6 @@ from pygame.locals import (
     QUIT,
 )
 from colour import Color 
-""" 
-from pygame import Vector2
-from pprint import pp
-from PySide2.examples.multimedia import player
-
-comment unused things detected by pyflakes """
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -34,7 +28,6 @@ SCREEN_HEIGHT = 600
 class Player(Sprite):
 
     def __init__(self, sprite_color, atk):
-
         def name_to_rgb(thiscolor):
             if type(thiscolor) != tuple:
                 col = Color(thiscolor)
@@ -130,7 +123,7 @@ set_caption("rock paper scissors")
 set_icon(icon)
 
 # use w3c color naming to recognize them
-player1 = Player('darkgreen', 1)
+player1 = Player('darkgreen', 3)
 player2 = Player('darkmagenta', 1)
 ground1 = Ground()
 
@@ -174,17 +167,34 @@ while running:
             else:
                 player1.speed.x = -sp1 * 2
                 player2.speed.x = -player1.speed.x
+        else:
+            if (player1.atk==1 and player2.atk==3) \
+            or (player1.atk==2 and player2.atk==1) \
+            or (player1.atk==3 and player2.atk==2):
+                if sp1 == 0:
+                    player2.speed.x = -sp2 * 2
+                    player1.speed.x = 0
+                else:
+                    player2.speed.x = sp1 * 2
+                    player1.speed.x = 0
+            else:
+                if sp1 == 0:
+                    player1.speed.x = sp2 * 2
+                    player2.speed.x = 0
+                else:
+                    player1.speed.x = -sp1 * 2
+                    player2.speed.x = 0
 
-#      r p s
-#    r x l w
-#    p w x l
-#    s l w x
-
-# <rect(177, 400, 50, 50)>
-# <rect(594, 400, 50, 50)>    
-    # player1.gravity()
-    # player2.gravity()
-    
+        #      r p s
+        #    r x l w
+        #    p w x l
+        #    s l w x
+        
+        # <rect(177, 400, 50, 50)>
+        # <rect(594, 400, 50, 50)>    
+        # player1.gravity()
+        # player2.gravity()
+            
         # # New gravity realistic
         
     if player1.speed.y < 0:
@@ -211,11 +221,13 @@ while running:
 
     if player1.rect.bottom > ground1.rect.top+5:
         if pygame.sprite.collide_rect(player1, ground1):
-            player1.speed[:]=(0,2)
+            player1.speed.x=0
+            player1.speed.y+=2
             
     if player2.rect.bottom > ground1.rect.top+5:
         if pygame.sprite.collide_rect(player2, ground1):
-            player2.speed[:]=(0,2)
+            player2.speed.x=0
+            player2.speed.y+=2
             
     player1.bound()
     player2.bound()
