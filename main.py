@@ -1,5 +1,4 @@
 import pygame
-from colour import Color
 from pygame.display import (
     set_caption,
     set_icon,
@@ -67,10 +66,7 @@ class Player(Sprite):
         
         thiscolor = name_to_rgb(sprite_color)
         self.surf = Surface((50, 50))
-<<<<<<< HEAD
-=======
         thiscolor = name_to_rgb(sprite_color)
->>>>>>> main
         self.surf.fill(thiscolor)
         self.rect = self.surf.get_rect()
         self.atk = atk
@@ -150,14 +146,9 @@ screen = set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 set_caption("rock paper scissors")
 set_icon(icon)
 
-<<<<<<< HEAD
-player1 = Player('red',1)
-player2 = Player((43, 224, 179),1)
-=======
 # use w3c color naming to recognize them
 player1 = Player('darkgreen', 1)
 player2 = Player('darkmagenta', 1)
->>>>>>> main
 ground1 = Ground()
 
 player2.rect.move_ip(177, 100)
