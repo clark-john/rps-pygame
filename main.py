@@ -25,15 +25,17 @@ from colour import Color
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
+
 class Player(Sprite):
 
     def __init__(self, sprite_color, atk):
+
         def name_to_rgb(thiscolor):
             if type(thiscolor) != tuple:
                 col = Color(thiscolor)
                 lttup = []
                 for x in col.rgb:
-                    lttup.append(int(round(x*255,0)))
+                    lttup.append(int(round(x * 255, 0)))
                 lttup = tuple(lttup)
                 thiscolor = lttup
                 return thiscolor
@@ -47,14 +49,6 @@ class Player(Sprite):
         self.rect = self.surf.get_rect()
         self.atk = atk
         self.allowjump = False
-        
-        if self.atk == 1:
-            print('rock')
-        elif self.atk == 2:
-            print('paper')
-        elif self.atk == 3:
-            print('scissors')
-            
         self.speed = pygame.Vector2()
         
     def update_player1(self, pressed_keys):
@@ -102,8 +96,21 @@ class Player(Sprite):
 
         if self.rect.left < 0:
             self.rect.left = 0
+    
+    def atk_stats(self): 
+        if self.atk == 1:
+            return 'rock'
+        elif self.atk == 2:
+            return 'paper'
+        elif self.atk == 3:
+            return 'scissors'
 
-
+    def change_atk(self):
+        if self.atk >= 3:
+            self.atk = 1
+        else: 
+            self.atk += 1
+            
 class Ground(Sprite):
 
     def __init__(self):
@@ -168,9 +175,9 @@ while running:
                 player1.speed.x = -sp1 * 2
                 player2.speed.x = -player1.speed.x
         else:
-            if (player1.atk==1 and player2.atk==3) \
-            or (player1.atk==2 and player2.atk==1) \
-            or (player1.atk==3 and player2.atk==2):
+            if (player1.atk == 1 and player2.atk == 3) \
+            or (player1.atk == 2 and player2.atk == 1) \
+            or (player1.atk == 3 and player2.atk == 2):
                 if sp1 == 0:
                     player2.speed.x = -sp2 * 2
                     player1.speed.x = 0
@@ -196,39 +203,46 @@ while running:
         # player2.gravity()
             
         # # New gravity realistic
-        
     if player1.speed.y < 0:
         if (player1.rect.top <= 150):
             player1.speed.y = 0
     else:
         if pygame.sprite.collide_rect(player1, ground1):  # checks collision player to ground
             player1.speed.y = 0
+            temp1 = player1.allowjump    
             player1.allowjump = True
+            if (temp1 != player1.allowjump):
+                print('player1: ' + str(player1.atk_stats()))
+                player1.change_atk()
         else:
             player1.speed.y += 2
             player1.allowjump = False
-            
+    
     if player2.speed.y < 0:
         if (player2.rect.top <= 150):
             player2.speed.y = 0
     else:
         if pygame.sprite.collide_rect(player2, ground1):  # checks collision player to ground
             player2.speed.y = 0
+            temp2 = player2.allowjump
             player2.allowjump = True
+            if (temp2 != player2.allowjump):
+                print('player2: ' + str(player2.atk_stats()))
+                player2.change_atk()
         else:
             player2.speed.y += 2
             player2.allowjump = False
 
-    if player1.rect.bottom > ground1.rect.top+5:
+    if player1.rect.bottom > ground1.rect.top + 5:
         if pygame.sprite.collide_rect(player1, ground1):
-            player1.speed.x=0
-            player1.speed.y+=2
+            player1.speed.x = 0
+            player1.speed.y += 2
             
-    if player2.rect.bottom > ground1.rect.top+5:
+    if player2.rect.bottom > ground1.rect.top + 5:
         if pygame.sprite.collide_rect(player2, ground1):
-            player2.speed.x=0
-            player2.speed.y+=2
-            
+            player2.speed.x = 0
+            player2.speed.y += 2
+    
     player1.bound()
     player2.bound()
 
