@@ -30,13 +30,13 @@ player1 = Player(
     "darkgreen",
     attack.AttackType.SCISSORS,
     Controller(left=K_LEFT, right=K_RIGHT, up=K_UP, down=K_DOWN),
-    (599, 100)
+    (599, 0)
 )
 player2 = Player(
     "darkmagenta",
     attack.AttackType.ROCK,
     Controller(left=K_a, right=K_d, up=K_w, down=K_s),
-    (177,100)
+    (177, 0)
 )
 ground1 = Ground()
 
@@ -154,9 +154,10 @@ while running:
         if pygame.sprite.collide_rect(player2, ground1):
             player2.speed.x = 0
             player2.speed.y += 2
-
-    player1.bound()
-    player2.bound()
+    
+    if player1.bound() or player2.bound():
+        player2.reset_pos()
+        player1.reset_pos()
 
     player2.move()
     player1.move()

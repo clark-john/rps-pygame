@@ -53,7 +53,12 @@ class Player(Sprite):
   
     def move(self):
         self.rect.move_ip(self.speed)
-    
+        
+    def reset_pos(self):
+        self.speed.xy = (0,0)
+        self.rect.x = self.init_pos[0]
+        self.rect.y = self.init_pos[1]
+        
     def bound(self):
         if self.rect.right > SCREEN_WIDTH:
             self.rect.right = SCREEN_WIDTH
@@ -67,13 +72,10 @@ class Player(Sprite):
             print("bottom of the screen")
             restart = msg.askyesno("rps-pygame","Play game again?")
             if restart:
-                print(self.init_pos)
-                self.speed.xy = (0,0)
-                self.rect.x = self.init_pos[0]
-                self.rect.y = self.init_pos[1]
+                return True
             else:
                 exit()
-                xy
+                
         if self.rect.left < 0:
             self.rect.left = 0
     
