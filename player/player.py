@@ -7,10 +7,10 @@ from tkinter import messagebox as msg
 from core.attack import AttackType
 from core.constants import SCREEN_HEIGHT,SCREEN_WIDTH
 from controller.controller import Controller
-
+import os
 class Player(Sprite):
 
-    def __init__(self, sprite_color, atk:AttackType, controller:Controller):
+    def __init__(self, sprite_color, atk:AttackType, controller:Controller, init_pos):
         def name_to_rgb(thiscolor):
             if type(thiscolor) != tuple:
                 col = Color(thiscolor)
@@ -32,6 +32,9 @@ class Player(Sprite):
         self.atk = atk
         self.allowjump = False
         self.speed = pygame.Vector2()
+        self.init_pos = init_pos
+        print(self.init_pos)
+        self.rect.move_ip(self.init_pos[0],self.init_pos[1])
         
     def update(self, pressed_keys):
         if pressed_keys[self.controller.left]:
@@ -60,13 +63,17 @@ class Player(Sprite):
 
         if self.rect.bottom >= SCREEN_HEIGHT:
             self.speed.y = 0
+
             print("bottom of the screen")
             restart = msg.askyesno("rps-pygame","Play game again?")
             if restart:
-                self.rect.move_ip(self.speed)
+                print(self.init_pos)
+                self.speed.xy = (0,0)
+                self.rect.x = self.init_pos[0]
+                self.rect.y = self.init_pos[1]
             else:
                 exit()
-
+                xy
         if self.rect.left < 0:
             self.rect.left = 0
     

@@ -7,7 +7,7 @@ from pygame.locals import (
     K_ESCAPE,
     KEYDOWN,
     QUIT,
-    K_a,K_s,K_d,K_w,K_LEFT,K_RIGHT,K_UP,K_DOWN
+    K_a,K_s,K_d,K_w,K_LEFT,K_RIGHT,K_UP,K_DOWN, K_r
 )
 from colour import Color
 from player.player import Player
@@ -30,16 +30,18 @@ player1 = Player(
     "darkgreen",
     attack.AttackType.SCISSORS,
     Controller(left=K_LEFT, right=K_RIGHT, up=K_UP, down=K_DOWN),
+    (599, 100)
 )
 player2 = Player(
     "darkmagenta",
     attack.AttackType.ROCK,
     Controller(left=K_a, right=K_d, up=K_w, down=K_s),
+    (177,100)
 )
 ground1 = Ground()
 
-player2.rect.move_ip(177, 100)
-player1.rect.move_ip(599, 100)
+#player2.rect.move_ip(177, 100)
+#player1.rect.move_ip(599, 100)
 
 running = True
 
