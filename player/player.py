@@ -1,15 +1,12 @@
 import pygame
 from pygame.sprite import Sprite
 from pygame.surface import Surface
+from pygame import init
 from colour import Color
-
-
-
+from tkinter import messagebox as msg
 from core.attack import AttackType
 from core.constants import SCREEN_HEIGHT,SCREEN_WIDTH
 from controller.controller import Controller
-
-
 
 class Player(Sprite):
 
@@ -53,7 +50,7 @@ class Player(Sprite):
   
     def move(self):
         self.rect.move_ip(self.speed)
-        
+    
     def bound(self):
         if self.rect.right > SCREEN_WIDTH:
             self.rect.right = SCREEN_WIDTH
@@ -63,6 +60,12 @@ class Player(Sprite):
 
         if self.rect.bottom >= SCREEN_HEIGHT:
             self.speed.y = 0
+            print("bottom of the screen")
+            restart = msg.askyesno("rps-pygame","Play game again?")
+            if restart:
+                self.rect.move_ip(self.speed)
+            else:
+                exit()
 
         if self.rect.left < 0:
             self.rect.left = 0
