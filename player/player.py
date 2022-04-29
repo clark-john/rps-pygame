@@ -44,9 +44,7 @@ class Player(Sprite):
             self.speed.x = 1
          
         if pressed_keys[self.controller.up] and self.allowjump == True:
-            self.speed.y += -0.3
-        else: 
-            self.speed.y = 0  
+            self.speed.y += -0.2
                 
         if pressed_keys[self.controller.down]:
             self.speed.x = 0
