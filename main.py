@@ -1,15 +1,12 @@
 import pygame
 from pygame.display import set_caption, set_icon, set_mode
-from pygame.surface import Surface
-from pygame.sprite import Sprite
 from pygame.image import load
 from pygame.locals import (
     K_ESCAPE,
     KEYDOWN,
     QUIT,
-    K_a,K_s,K_d,K_w,K_LEFT,K_RIGHT,K_UP,K_DOWN, K_r
+    K_a,K_s,K_d,K_w,K_LEFT,K_RIGHT,K_UP,K_DOWN
 )
-from colour import Color
 from player.player import Player
 from ground.ground import Ground
 from core import constants, attack

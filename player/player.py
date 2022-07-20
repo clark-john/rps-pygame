@@ -1,14 +1,10 @@
 import pygame
 from pygame.sprite import Sprite
-from pygame.surface import Surface
-from pygame import init
 from colour import Color
 from tkinter import messagebox as msg
 from core.attack import AttackType
 from core.constants import SCREEN_HEIGHT,SCREEN_WIDTH
 from controller.controller import Controller
-from pygame.image import load
-import os
 
 class Player(Sprite):
 
