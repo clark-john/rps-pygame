@@ -17,9 +17,7 @@ class Player(Sprite):
                     lttup.append(int(round(x * 255, 0)))
                 lttup = tuple(lttup)
                 thiscolor = lttup
-                return thiscolor
-            else:
-                return thiscolor
+            return thiscolor
                 
         super(Player, self).__init__()
         self.controller = controller
